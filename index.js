@@ -22,14 +22,13 @@
         for (prop in cssObj) {
             element.style[prop] = cssObj[prop]
         }
-        console.log(element)
     }
 
     //calculate the space left for the input 
 
     function calculateInputWidth(lastTag) {
         const w = container.offsetWidth
-        let t = w - (lastTag.offsetWidth + lastTag.offsetLeft)-5
+        let t = w - (lastTag.offsetWidth + lastTag.offsetLeft) - 5
         t = Math.max(t, w / 3)
         return t
     }
@@ -38,15 +37,12 @@
     function init() {
         newInput.addEventListener('keypress', addTag)
         setStyles(container, {
-            position: 'relative',
-            width: '200px',
+            width: '600px',
             border: `1px solid ${options.borderColor}`,
-            display: 'inline-block'
         })
         setStyles(newInput, {
             border: 'none',
             width: '100%',
-            display: 'inline-block'
         })
         setStyles(originalInput, {
             display: 'none'
@@ -56,6 +52,17 @@
         parent.insertBefore(container, originalInput)
         container.appendChild(newInput)
 
+    }
+
+    //copy neccessary attributes on old input to new input
+    function copyAttrToNew() {
+        const attributesToConsider = 'placeholder, autofocus, minLength, maxLength, required'.split(',')
+        const originalInputAttrs = originalInput.attributes
+        attributesToConsider.forEach((attr)=> {
+            if (originalInputAttrs[attr]) {
+                newInput[attr] = originalInput[attr]
+            }
+        })
     }
 
     function addTag(e) {
@@ -74,20 +81,20 @@
 
             container.insertBefore(tag, input)
 
-            const t = Array.from(document.querySelectorAll('.tag')).pop()
-
-            const width = calculateInputWidth(t)
+            const width = calculateInputWidth(lastTag)
+            setStyles(input, {
+                width: width + 'px'
+            })
             setStyles(tag, {
                 padding: '5px',
                 display: 'inline-block',
             })
-            setStyles(input, {
-                width: width + 'px'
-            })
+            
         }
     }
 
     init()
+    copyAttrToNew()
    
 
 
