@@ -22,6 +22,7 @@
         for (prop in cssObj) {
             element.style[prop] = cssObj[prop]
         }
+        console.log(element)
     }
 
     //calculate the space left for the input 
@@ -40,10 +41,12 @@
             position: 'relative',
             width: '200px',
             border: `1px solid ${options.borderColor}`,
+            display: 'inline-block'
         })
         setStyles(newInput, {
             border: 'none',
-            width: '100%'
+            width: '100%',
+            display: 'inline-block'
         })
         setStyles(originalInput, {
             display: 'none'
@@ -59,21 +62,29 @@
         const input = e.target
         if (input.value === '') return
 
-        const tag = newELement('span')
-        tag.textContent = input.value
-        tag.className = 'tag'
-        //keep track of last tag, will help in calculating 
-        //remaining space that input can occupy
-        lastTag = tag
+        if (e.keyCode === 13) {
 
-        container.insertBefore(tag, input)
+            const tag = newELement('span')
+            tag.textContent = input.value
+          
+            tag.className = 'tag'
+            //keep track of last tag, will help in calculating 
+            //remaining space that input can occupy
+            lastTag = tag
 
-        const width = calculateInputWidth(lastTag)
-        setStyles(tag, {
-            padding: '5px',
-            display: 'inline-block',
-            width: width + 'px'
-        })
+            container.insertBefore(tag, input)
+
+            const t = Array.from(document.querySelectorAll('.tag')).pop()
+
+            const width = calculateInputWidth(t)
+            setStyles(tag, {
+                padding: '5px',
+                display: 'inline-block',
+            })
+            setStyles(input, {
+                width: width + 'px'
+            })
+        }
     }
 
     init()
