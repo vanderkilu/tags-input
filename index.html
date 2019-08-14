@@ -25,9 +25,21 @@
             transition: all 0.4s;
             cursor: pointer;
             background-color: #eeeeee;
+            animation: fadeIn 0.5s;
         }
         .tag:hover {
             background-color: #ffcdd2;
+        }
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                opacity: 1;
+            }
         }
     </style>
 </head>
