@@ -5,6 +5,8 @@
     const container = newELement('div', {class: 'tag-container'})
     const newInput = newELement('input')
     let lastTag
+    let allowDuplicate  = true
+    const tagsText = []
 
     //default settings
     const options = {
@@ -42,13 +44,9 @@
     //hook things up
     function init() {
         newInput.addEventListener('keypress', addTag)
+
         setStyles(container, {
             border: `1px solid ${options.borderColor}`,
-        })
-        setStyles(newInput, {
-            border: 'none',
-            width: '100%',
-            outline: 'none'
         })
         setStyles(originalInput, {
             display: 'none'
@@ -88,15 +86,44 @@
 
             const width = calculateInputWidth(lastTag)
             setStyles(input, {
-                width: width + 'px'
+                width: width + 'px',
+                'margin-left': '2px'
             })
             setStyles(tag, {
-                'background-color': options.tagBgColor,
+                'position': 'relative'
             })
             input.value = ''
-            
+
+            //check late for duplicate
+            if (isDuplicate(tag.textContent)) {
+                setStyles(tag, {
+                    'background-color': '#ffcdd2'
+                })
+                setTimeout(()=> {
+                    removeTag(tag)
+                }, 500)
+            }
+
+            tagsText.push(tag.textContent)
+            listenOn(tag)
         }
     }
+    //add listener to tag
+    function listenOn(tag) {
+        tag.addEventListener('click', removeTag)
+    }
+    //remove tag 
+    function removeTag(e) {
+        //checks to see if it is an event or element itself
+        const tag = e.target ? e.target : e
+        const parent = tag.parentNode
+        parent.removeChild(tag)
+    }
+    //check for duplicate
+    function isDuplicate(tagText) {
+       return tagsText.includes(tagText)
+    }
+    
 
     init()
     copyAttrToNew()
