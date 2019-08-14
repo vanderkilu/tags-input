@@ -93,6 +93,7 @@
             setStyles(tag, {
                 'background-color': options.tagBgColor,
             })
+            input.value = ''
             
         }
     }
