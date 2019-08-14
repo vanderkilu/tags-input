@@ -77,7 +77,7 @@
         if (e.keyCode === 13) {
 
             const tag = newELement('span', {class: 'tag'})
-            tag.textContent = input.value
+            tag.textContent = input.value.trim()
           
             //keep track of last tag, will help in calculating 
             //remaining space that input can occupy
