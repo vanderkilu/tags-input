@@ -4,9 +4,8 @@
     const parent = originalInput.parentNode
     const container = newELement('div', {class: 'tag-container'})
     const newInput = newELement('input')
-    //keep track of last tag used to calculate remaining width
-    let lastTag
-    const tagsText = []
+    //keep track of tags
+    const tags = []
 
     //default settings
     const options = {
@@ -44,7 +43,13 @@
 
     //hook things up
     function init() {
-        newInput.addEventListener('keypress', addTag)
+        newInput.addEventListener('keydown', checkKey)
+        newInput.addEventListener('focus', ()=> {
+            container.classList.add('focus')
+        })
+        newInput.addEventListener('blur', ()=> {
+            container.classList.remove('focus')
+        })
 
         setStyles(container, {
             border: `1px solid ${options.borderColor}`,
@@ -69,45 +74,54 @@
             }
         })
     }
+    //check key pressed
+    function checkKey(e) {
+        const key = e.keyCode || e.which
+        if (key === 13 || key === 9 || key === 188) { 
+            addTag(e)
+        }
+        if (key === 8 || key === 46) {
+            if (tags.length) {
+                const lastTag = tags.pop()
+                removeTag(lastTag)
+            }
+        }
 
+    }
+    //create tag
     function addTag(e) {
         const input = e.target
         if (input.value === '') return
 
-        if (e.keyCode === 13) {
+        const tag = newELement('span', {class: 'tag'})
+        tag.textContent = input.value.trim()
+        
+        container.insertBefore(tag, input)
 
-            const tag = newELement('span', {class: 'tag'})
-            tag.textContent = input.value.trim()
-          
-            //keep track of last tag, will help in calculating 
-            //remaining space that input can occupy
-            lastTag = tag
+        const width = calculateInputWidth(tag)
+        setStyles(input, {
+            width: width + 'px',
+            'margin-left': '2px'
+        })
+        setStyles(tag, {
+            'position': 'relative'
+        })
+        input.value = ''
 
-            container.insertBefore(tag, input)
-
-            const width = calculateInputWidth(lastTag)
-            setStyles(input, {
-                width: width + 'px',
-                'margin-left': '2px'
-            })
+        //check late for duplicate
+        if (!options.allowDuplicate && isDuplicate(tag.textContent)) {
             setStyles(tag, {
-                'position': 'relative'
+                'background-color': '#ffcdd2'
             })
-            input.value = ''
-
-            //check late for duplicate
-            if (!options.allowDuplicate && isDuplicate(tag.textContent)) {
-                setStyles(tag, {
-                    'background-color': '#ffcdd2'
-                })
-                setTimeout(()=> {
-                    removeTag(tag)
-                }, 500)
-            }
-
-            tagsText.push(tag.textContent)
-            listenOn(tag)
+            setTimeout(()=> {
+                removeTag(tag)
+            }, 500)
         }
+
+        tags.push(tag)
+
+        listenOn(tag)
+        focusAgain(e)
     }
     //add listener to tag
     function listenOn(tag) {
@@ -122,9 +136,15 @@
     }
     //check for duplicate
     function isDuplicate(tagText) {
-       return tagsText.includes(tagText)
+        const t = tags.find(t => t.textContent === tagText)
+        if (t) return true
+        return false
     }
-    
+    //focus again for tab and comma keys
+    function focusAgain(e) {
+        e.preventDefault();
+        newInput.focus()
+    }
 
     init()
     copyAttrToNew()
