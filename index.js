@@ -2,19 +2,25 @@
     //state
     const originalInput = document.querySelector('.input-tag')
     const parent = originalInput.parentNode
-    const container = newELement('div')
+    const container = newELement('div', {class: 'tag-container'})
     const newInput = newELement('input')
     let lastTag
 
     //default settings
     const options = {
-        borderColor: 'black',
-        tagBgColor: 'grey',
+        borderColor: '#bdbdbd',
+        tagBgColor: '#eeeeee',
         tagColor: 'black'
     }
 
-    function newELement(name) {
-        return document.createElement(name)
+    function newELement(name, attrs) {
+        const el = document.createElement(name)
+        if (attrs) {
+            for (attr in attrs) {
+                el.setAttribute(attr, attrs[attr])
+            }
+        }
+        return el
     }
 
     //set styles on an element
@@ -37,12 +43,12 @@
     function init() {
         newInput.addEventListener('keypress', addTag)
         setStyles(container, {
-            width: '600px',
             border: `1px solid ${options.borderColor}`,
         })
         setStyles(newInput, {
             border: 'none',
             width: '100%',
+            outline: 'none'
         })
         setStyles(originalInput, {
             display: 'none'
@@ -71,10 +77,9 @@
 
         if (e.keyCode === 13) {
 
-            const tag = newELement('span')
+            const tag = newELement('span', {class: 'tag'})
             tag.textContent = input.value
           
-            tag.className = 'tag'
             //keep track of last tag, will help in calculating 
             //remaining space that input can occupy
             lastTag = tag
@@ -86,8 +91,7 @@
                 width: width + 'px'
             })
             setStyles(tag, {
-                padding: '5px',
-                display: 'inline-block',
+                'background-color': options.tagBgColor,
             })
             
         }
