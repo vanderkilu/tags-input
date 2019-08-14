@@ -4,15 +4,16 @@
     const parent = originalInput.parentNode
     const container = newELement('div', {class: 'tag-container'})
     const newInput = newELement('input')
+    //keep track of last tag used to calculate remaining width
     let lastTag
-    let allowDuplicate  = true
     const tagsText = []
 
     //default settings
     const options = {
         borderColor: '#bdbdbd',
         tagBgColor: '#eeeeee',
-        tagColor: 'black'
+        tagColor: 'black',
+        allowDuplicate: false
     }
 
     function newELement(name, attrs) {
@@ -95,7 +96,7 @@
             input.value = ''
 
             //check late for duplicate
-            if (isDuplicate(tag.textContent)) {
+            if (!options.allowDuplicate && isDuplicate(tag.textContent)) {
                 setStyles(tag, {
                     'background-color': '#ffcdd2'
                 })
