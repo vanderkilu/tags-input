@@ -1,14 +1,14 @@
 (function(){
     //state
-    const originalInput = document.querySelector('.input-tag')
-    const parent = originalInput.parentNode
-    const container = newELement('div', {class: 'tag-container'})
-    const newInput = newELement('input')
+    let originalInput
+    let parent
+    let container
+    let newInput
     //keep track of tags
     const tags = []
 
     //default settings
-    const options = {
+    let options = {
         borderColor: '#bdbdbd',
         tagBgColor: '#eeeeee',
         tagColor: 'black',
@@ -16,7 +16,13 @@
     }
 
     function newELement(name, attrs) {
-        const el = document.createElement(name)
+        let el
+        if (typeof name === 'string') {
+            el = document.createElement(name)
+        }
+        else {
+            el = name
+        }
         if (attrs) {
             for (attr in attrs) {
                 el.setAttribute(attr, attrs[attr])
@@ -61,6 +67,8 @@
         //attach custom elements to DOM
         parent.insertBefore(container, originalInput)
         container.appendChild(newInput)
+
+        copyAttrToNew()
 
     }
 
@@ -114,6 +122,7 @@
                 'background-color': '#ffcdd2'
             })
             setTimeout(()=> {
+                tags.pop()
                 removeTag(tag)
             }, 500)
         }
@@ -146,9 +155,32 @@
         newInput.focus()
     }
 
-    init()
-    copyAttrToNew()
+    //reveal public api
+    const api =  {
+        init: (opts) => {
+            if (!opts.selector) return
+
+            //override defaults options with new options
+            options = Object.assign({}, options, opts)
+
+            container = newELement('div', {class: 'tag-container'})
+            newInput = newELement('input')
+            originalInput = newELement(opts.selector)
+            parent = originalInput.parentNode
+
+            init()
+
+        }
+    }
+
    
+    if (typeof exports == "object") {
+        module.exports = api
+    } else if (typeof define == "function" && define.amd) {
+        define(function(){ return api })
+    } else {
+        window.Tagger = api
+    }
 
 
 })()
