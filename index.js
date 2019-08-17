@@ -81,7 +81,7 @@
             addTag(e)
         }
         if (key === 8 || key === 46) {
-            if (tags.length) {
+            if (tags.length && newInput.value==='') {
                 const lastTag = tags.pop()
                 removeTag(lastTag)
             }
