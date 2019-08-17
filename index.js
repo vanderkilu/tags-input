@@ -10,7 +10,7 @@
     //default settings
     let options = {
         borderColor: '#bdbdbd',
-        tagBgColor: '#eeeeee',
+        tagBgColor: '',
         tagColor: 'black',
         allowDuplicate: false
     }
@@ -59,6 +59,7 @@
 
         setStyles(container, {
             border: `1px solid ${options.borderColor}`,
+            width: getComputedStyle(originalInput).getPropertyValue('width')
         })
         setStyles(originalInput, {
             display: 'none'
@@ -108,11 +109,7 @@
 
         const width = calculateInputWidth(tag)
         setStyles(input, {
-            width: width + 'px',
-            'margin-left': '2px'
-        })
-        setStyles(tag, {
-            'position': 'relative'
+            width: width + 'px'
         })
         input.value = ''
 
@@ -125,6 +122,13 @@
                 tags.pop()
                 removeTag(tag)
             }, 500)
+        }
+
+        //check if custom colors entered
+        if (options.tagBgColor) {
+            setStyles(tag, {
+                'background-color': options.tagBgColor
+            })
         }
 
         tags.push(tag)

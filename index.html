@@ -7,7 +7,6 @@
     <title>Document</title>
     <style>
         .tag-container {
-            /* width: 300px; */
             border-radius: 2px;
             padding: 3px;
         }
@@ -15,6 +14,7 @@
             border: none;
             width: 100%;
             outline: none;
+            margin-left: 2px
         }
         .tag {
             padding: 3px 10px;
@@ -32,6 +32,9 @@
         }
         .tag-container.focus{
             outline: 1px solid #ffcdd2;
+        }
+        .input-tag {
+            width: 60%;
         }
         @keyframes fadeIn {
             0% {
@@ -54,7 +57,7 @@
     <script>
         const input = document.querySelector('.input-tag')
         Tagger.init({
-            selector: input
+            selector: input,
         })
     </script>
 </body>
