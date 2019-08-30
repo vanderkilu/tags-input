@@ -7,12 +7,11 @@
     <title>Document</title>
     <style>
         .tag-container {
-            border-radius: 2px;
-            padding: 3px;
+           width: 100%;
         }
         .tag-container input {
             border: none;
-            width: 100%;
+            width: 60%;
             outline: none;
             margin-left: 2px
         }
@@ -33,8 +32,10 @@
         .tag-container.focus{
             outline: 1px solid #ffcdd2;
         }
-        .input-tag {
-            width: 60%;
+        form {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
         }
         @keyframes fadeIn {
             0% {
@@ -51,7 +52,9 @@
 </head>
 <body>
     <form>
-        <input type="text" class="input-tag" placeholder="add text">
+        <input type="text"  placeholder="first name">
+        <input type="text" placeholder="last name">
+        <input type="text" class="input-tag" placeholder="add tags">
     </form>
     <script src="index.js"></script>
     <script>
