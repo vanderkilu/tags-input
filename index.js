@@ -5,7 +5,7 @@
     let container
     let newInput
     //keep track of tags
-    const tags = []
+    let tags = []
 
     //default settings
     let options = {
@@ -146,6 +146,7 @@
         //checks to see if it is an event or element itself
         const tag = e.target ? e.target : e
         const parent = tag.parentNode
+        tags = tags.filter(t => t.textContent !== tag.textContent)
         parent.removeChild(tag)
     }
     //check for duplicate
