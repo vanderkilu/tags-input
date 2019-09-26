@@ -11,8 +11,9 @@
     let options = {
         borderColor: '#bdbdbd',
         tagBgColor: '',
-        tagColor: 'black',
-        allowDuplicate: false
+        tagColor: '',
+        allowDuplicate: false,
+        duplicateColor: '#e0f2f1'
     }
 
     function newELement(name, attrs) {
@@ -116,7 +117,7 @@
         //check late for duplicate
         if (!options.allowDuplicate && isDuplicate(tag.textContent)) {
             setStyles(tag, {
-                'background-color': '#ffcdd2'
+                'background-color': options.duplicateColor
             })
             setTimeout(()=> {
                 tags.pop()
