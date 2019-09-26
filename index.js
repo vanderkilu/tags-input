@@ -45,7 +45,7 @@
         const w = container.offsetWidth
         if(!w) return
         let t = w - (lastTag.offsetWidth + lastTag.offsetLeft) - 5
-        t = Math.max(t, w / 3)
+        t = Math.max(t, w / 5)
         return t
     }
 
