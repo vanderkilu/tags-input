@@ -42,6 +42,7 @@
 
     function calculateInputWidth(lastTag) {
         const w = container.offsetWidth
+        if(!w) return
         let t = w - (lastTag.offsetWidth + lastTag.offsetLeft) - 5
         t = Math.max(t, w / 3)
         return t
@@ -58,8 +59,7 @@
         })
 
         setStyles(container, {
-            border: `1px solid ${options.borderColor}`,
-            width: getComputedStyle(originalInput).getPropertyValue('width')
+            border: `1px solid ${options.borderColor}`
         })
         setStyles(originalInput, {
             display: 'none'
@@ -108,10 +108,10 @@
         container.insertBefore(tag, input)
 
         const width = calculateInputWidth(tag)
-        setStyles(input, {
+        setStyles(newInput, {
             width: width + 'px'
         })
-        input.value = ''
+        newInput.value = ''
 
         //check late for duplicate
         if (!options.allowDuplicate && isDuplicate(tag.textContent)) {
